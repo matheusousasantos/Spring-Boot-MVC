@@ -25,7 +25,10 @@ public class PessoaController {
 	public ModelAndView incio() {
 
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+		Iterable<Pessoa> pessoasItr = pessoaRepository.findAll();
 		modelAndView.addObject("pessoaobj", new Pessoa());
+		modelAndView.addObject("pessoas", pessoasItr);
+		
 		return modelAndView;
 	}
 
@@ -83,6 +86,16 @@ public class PessoaController {
 		
 		return modelAndView;
 
+	}
+	
+	@GetMapping("/telefones/{idpessoa}")
+	public ModelAndView getTelefones(@PathVariable("idpessoa") Long idpessoa) {
+
+		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);
+
+		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+		modelAndView.addObject("pessoaobj", pessoa.get());
+		return modelAndView;
 	}
 
 }
