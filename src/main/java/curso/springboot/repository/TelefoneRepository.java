@@ -9,7 +9,4 @@ import curso.springboot.model.Telefone;
 @Repository
 @Transactional
 public interface TelefoneRepository extends CrudRepository<Telefone, Long>{
-	
-	
-
 }
