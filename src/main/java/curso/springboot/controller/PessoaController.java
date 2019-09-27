@@ -21,7 +21,7 @@ public class PessoaController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView incio() {
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		modelAndView.addObject("pessoaobj", new Pessoa());
 		return modelAndView;
@@ -49,14 +49,26 @@ public class PessoaController {
 		modelAndView.addObject("pessoas", pessoasItr);
 		return modelAndView;
 	}
-	
+
 	@GetMapping("/editarpessoa/{idpessoa}")
-	public ModelAndView editar( @PathVariable("idpessoa") Long idpessoa ) {
-		
+	public ModelAndView editar(@PathVariable("idpessoa") Long idpessoa) {
+
 		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-		modelAndView.addObject("pessoaobj",pessoa.get());
+		modelAndView.addObject("pessoaobj", pessoa.get());
+		return modelAndView;
+	}
+
+	@GetMapping("/removerpessoa/{idpessoa}")
+	public ModelAndView excluir(@PathVariable("idpessoa") Long idpessoa) {
+
+		pessoaRepository.deleteById(idpessoa);
+
+		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+		modelAndView.addObject("pessoas", pessoaRepository.findAll());
+		modelAndView.addObject("pessoaobj", new Pessoa());
+
 		return modelAndView;
 	}
 
