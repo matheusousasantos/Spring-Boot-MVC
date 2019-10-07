@@ -22,7 +22,7 @@ public class PessoaController {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
+
 	@Autowired
 	private TelefoneRepository telefoneRepository;
 
@@ -33,7 +33,7 @@ public class PessoaController {
 		Iterable<Pessoa> pessoasItr = pessoaRepository.findAll();
 		modelAndView.addObject("pessoaobj", new Pessoa());
 		modelAndView.addObject("pessoas", pessoasItr);
-		
+
 		return modelAndView;
 	}
 
@@ -81,18 +81,18 @@ public class PessoaController {
 
 		return modelAndView;
 	}
-	
+
 	@PostMapping("**/pesquisarpessoa")
 	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa) {
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
 		modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
 		modelAndView.addObject("pessoaobj", new Pessoa());
-		
+
 		return modelAndView;
 
 	}
-	
+
 	@GetMapping("/telefones/{idpessoa}")
 	public ModelAndView getTelefones(@PathVariable("idpessoa") Long idpessoa) {
 
@@ -103,28 +103,34 @@ public class PessoaController {
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idpessoa));
 		return modelAndView;
 	}
-	
+
 	@PostMapping("**/addFonePessoa/{pessoaid}")
-	public ModelAndView addFonePessoa( Telefone telefone, @PathVariable("pessoaid") Long pessoaid ) {
-		
+	public ModelAndView addFonePessoa(Telefone telefone, @PathVariable("pessoaid") Long pessoaid) {
+
 		Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
 		telefone.setPessoa(pessoa);
 		telefoneRepository.save(telefone);
-		
+
 		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
 		modelAndView.addObject("pessoaobj", pessoa);
 		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
 
 		return modelAndView;
+
+	}
+	
+	@GetMapping("/removertelefone/{idtelefone}")
+	public ModelAndView removertelefone(@PathVariable("idtelefone") Long idtelefone) {
 		
+		Optional<Telefone> telefone = telefoneRepository.findById(idtelefone);
+		Pessoa pessoa = telefone.get().getPessoa();
+		telefoneRepository.deleteById(idtelefone);
+
+		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoa.getId()));
+		modelAndView.addObject("pessoaobj", pessoa);
+
+		return modelAndView;
 	}
 
 }
-
-
-
-
-
-
-
-
