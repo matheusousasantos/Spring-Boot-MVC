@@ -18,9 +18,7 @@ public class Usuario implements UserDetails{
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private Long id;
-	
 	private String login;
-	
 	private String senha;
 	
 
