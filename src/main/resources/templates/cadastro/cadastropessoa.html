@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org.1999/xhtml"
-	xmlns:th="https://www.thymeleaf.org">
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security" >
+	
 <head>
 <meta charset="UTF-8">
 <title>Cadastro Pessoa</title>
@@ -58,7 +60,7 @@
 			
 			</div>
 			
-			<div class="row">
+			<div class="row" sec:authorize="hasRole('ROLE_TECNICO')">
 			
 				<div class="input-field col s12"> 
 				
