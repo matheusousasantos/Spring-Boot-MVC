@@ -8,18 +8,20 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ForeignKey;
 
+@SuppressWarnings("deprecation")
 @Entity
 public class Telefone {
-	
+
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String numero;
+
 	private String tipo;
-	
-	@ManyToOne(  )
-	@ForeignKey( name = "pessoa_id" )
+
+	@ForeignKey(name="pessoa_id")
+	@ManyToOne
 	private Pessoa pessoa;
 
 	public Long getId() {
@@ -53,5 +55,5 @@ public class Telefone {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-	
+
 }

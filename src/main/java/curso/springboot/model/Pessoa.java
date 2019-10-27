@@ -1,7 +1,6 @@
 package curso.springboot.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,24 +17,20 @@ import javax.validation.constraints.NotNull;
 public class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@NotEmpty( message = "Nome não pode ser Vazio!" )
-	@NotNull( message = "Nome não pode ser nulo!" )
+
+	@NotNull(message="Nome não pode ser nulo")
+	@NotEmpty(message = "Nome não pode ser vazio")
 	private String nome;
-	
-	@NotEmpty( message = "Sobrenome não pode ser Vazio!" )
-	@NotNull( message = "Sobrenome não pode ser nulo!" )
+
+	@NotNull(message = "Sobrenome não pode ser nulo")
+	@NotEmpty(message = "Sobrenome não pode ser vazio")
 	private String sobrenome;
 	
-	@OneToMany( mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL )
-	List<Telefone> telefones = new ArrayList<Telefone>();
-	
-	
-	@Min( value = 18, message = "Idade Invalida!" )
+	@Min(value = 18, message = "Idade inválida")
 	private int idade;
 	
 	private String cep;
@@ -44,6 +39,25 @@ public class Pessoa implements Serializable {
 	private String cidade;
 	private String uf;
 	private String ibge;
+	
+	@OneToMany(mappedBy="pessoa", orphanRemoval= true, cascade = CascadeType.ALL)
+	private List<Telefone> telefones;
+	
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
+	}
+	
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+	
+	public void setIdade(int idade) {
+		this.idade = idade;
+	}
+	
+	public int getIdade() {
+		return idade;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,22 +81,6 @@ public class Pessoa implements Serializable {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
-	}
-
-	public int getIdade() {
-		return idade;
-	}
-
-	public void setIdade(int idade) {
-		this.idade = idade;
-	}
-
-	public List<Telefone> getTelefones() {
-		return telefones;
-	}
-
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
 	}
 
 	public String getCep() {
@@ -136,5 +134,7 @@ public class Pessoa implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
 
 }

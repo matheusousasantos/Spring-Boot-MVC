@@ -16,25 +16,30 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Usuario implements UserDetails{
-	
+public class Usuario implements UserDetails {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private String login;
 	private String senha;
 	
-	@OneToMany( fetch =  FetchType.EAGER)
-	@JoinTable(name = "usuarios_rule", 
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuarios_role", 
+	     joinColumns = @JoinColumn(name = "usuario_id", 
+	                   referencedColumnName = "id",
+	                   table = "usuario"),  // cria tabela de acesso do usuário
+			
+			inverseJoinColumns = @JoinColumn(name="role_id",
+								referencedColumnName = "id",
+								table = "role"))
 	
-		joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id", table = "usuario"), 
-		inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role")
-		
-		)
-	private List<Rule> rules;//Vamos dizer que são os cargos em uma empresa
+	private List<Role> roles;
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -59,17 +64,17 @@ public class Usuario implements UserDetails{
 		this.senha = senha;
 	}
 
-	@Override//Retorna os acessos
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return rules;
+		return roles;
 	}
 
-	@Override//retorna a senha
+	@Override
 	public String getPassword() {
 		return senha;
 	}
 
-	@Override//retorna a senha
+	@Override
 	public String getUsername() {
 		return login;
 	}

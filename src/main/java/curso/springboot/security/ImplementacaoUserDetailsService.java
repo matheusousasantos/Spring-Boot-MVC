@@ -13,23 +13,23 @@ import curso.springboot.repository.UsuarioRepository;
 
 @Service
 @Transactional
-public class ImplementacaoUserDetailsService implements UserDetailsService{
+public class ImplementacaoUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
 		Usuario usuario = usuarioRepository.findUserByLogin(username);
 		
-		if(usuario == null) {
-			throw new UsernameNotFoundException("Usuário não foi encontrado!");
+		if (usuario == null) {
+			throw new UsernameNotFoundException("Usuário não foi encontrado");
 		}
 		
-		return new User(usuario.getLogin() , usuario.getPassword(), true, 
-				true, true, 
-				true, usuario.getAuthorities());
+		return new User(usuario.getLogin(), usuario.getPassword(), 
+				usuario.isEnabled(), true,
+				true, true,
+				usuario.getAuthorities());
 	}
 
 }
