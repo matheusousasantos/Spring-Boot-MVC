@@ -58,10 +58,19 @@ form input[type=submit] {
 			</div>
 
 			<div class="row">
-				<div class="input-field col s12">
+				<div class="input-field col s6">
 					<label for="sobrenome" class="active">Sobrenome</label> <input
 						name="sobrenome" class="validate" th:field="*{sobrenome}"
 						id="sobrenome" placeholder="Informe o Sobrenome da pessoa">
+				</div>
+			
+				<div class="input-field col s6">
+					<label for="sexopessoa" class="active">Sexo</label>
+					<select class="browser-default" th:field="*{sexopessoa}">
+						<option value="" disabled selected>[--Selecione--]</option>
+						<option value="MASCULINO" th:text="Masculino"/>
+						<option value="FEMININO"th:text="Feminino"/>
+					</select>
 				</div>
 			</div>
 
@@ -120,18 +129,10 @@ form input[type=submit] {
 			</div>
 
 			<div class="row">
-				<div class="input-field col s12">
-					<label class="active">Idade</label> <input name="rua"
-						th:field="*{rua}" id="rua" class="validate"
-						placeholder="Informe a Idade">
-				</div>
-			</div>
-
-			<div class="row">
 				<div class="input-field col s6">
 					<input class="waves-effect waves-light btn" type="submit"
 						value="Salvar">
-
+ 
 					<button class="waves-effect waves-light btn"
 						onclick="document.getElementById('formpessoa').reset();">Novo</button>
 

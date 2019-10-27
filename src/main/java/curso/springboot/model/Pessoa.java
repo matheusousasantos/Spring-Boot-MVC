@@ -40,6 +40,8 @@ public class Pessoa implements Serializable {
 	private String uf;
 	private String ibge;
 	
+	private String sexopessoa;
+	
 	@OneToMany(mappedBy="pessoa", orphanRemoval= true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
 	
@@ -134,7 +136,13 @@ public class Pessoa implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
 
+	public String getSexopessoa() {
+		return sexopessoa;
+	}
+
+	public void setSexopessoa(String sexopessoa) {
+		this.sexopessoa = sexopessoa;
+	}
+	
 }
