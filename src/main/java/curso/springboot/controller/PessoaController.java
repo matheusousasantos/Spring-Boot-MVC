@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.Spring;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,9 +134,52 @@ public class PessoaController{
 	public void imprimePDF(@RequestParam("nomepesquisa") String nomepesquisa, 
 			@RequestParam("pesqsexo") String pesqsexo,
 			HttpServletRequest request,
-			HttpServletRequest response) {
+			HttpServletResponse response) throws Exception {
 		
-		System.out.println("dsdsd");
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		
+		if(pesqsexo != null && !pesqsexo.isEmpty() && nomepesquisa != null &&  !nomepesquisa.isEmpty()) {
+			
+			pessoas = pessoaRepository.findPessoaByNameSexo(nomepesquisa, pesqsexo);
+			
+		} else if(nomepesquisa != null && !nomepesquisa.isEmpty()) {
+			
+			pessoas = pessoaRepository.findPessoaByName(nomepesquisa);
+			
+		} else if(pesqsexo != null && !pesqsexo.isEmpty()){
+			
+			pessoas = pessoaRepository.findPessoaBySexo(pesqsexo);
+
+			
+		} else {
+			
+			Iterable<Pessoa>iterator = pessoaRepository.findAll();
+			
+			for (Pessoa pessoa : iterator) {
+				pessoas.add(pessoa);
+			}
+		}
+		
+//		Chamar o serviço que faz a geração do relatório
+		byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+		
+//		Tamanho da resposta pro Navegador
+		response.setContentLength(pdf.length);//Tamanho do pdf.O navegador precisa saber o tamanho da resposta
+		
+//		Definfir na resposta o tipo de arquivo
+//		"application/octet-stream" - Serve para arqivos, pdf, video, midia, etc...
+		response.setContentType("application/octet-stream");
+		
+//		Definir cabeçalho da nossa resposta
+		String headerKey = "Content-Disposition";
+		
+	      //Será montado um cabeçalho corretamente                            nome do arquivo
+			String headerValue = String.format("attachment; filename=\"%s\"", "relatorio.pdf");
+		
+		response.setHeader(headerKey, headerValue);
+		
+//		Finalizando a resposta pro navegador - Escrevendo o byte pra saída
+		response.getOutputStream().write(pdf);
 		
 	}
 	
