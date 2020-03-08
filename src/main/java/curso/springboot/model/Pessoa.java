@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,15 +25,15 @@ public class Pessoa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull(message="Nome n√£o pode ser nulo")
-	@NotEmpty(message = "Nome n√£o pode ser vazio")
+	@NotNull(message="Nome n„o pode ser nulo")
+	@NotEmpty(message = "Nome n„o pode ser vazio")
 	private String nome;
 
-	@NotNull(message = "Sobrenome n√£o pode ser nulo")
-	@NotEmpty(message = "Sobrenome n√£o pode ser vazio")
+	@NotNull(message = "Sobrenome n„o pode ser nulo")
+	@NotEmpty(message = "Sobrenome n„o pode ser vazio")
 	private String sobrenome;
 	
-	@Min(value = 18, message = "Idade inv√°lida")
+	@Min(value = 18, message = "Idade inv·lida")
 	private int idade;
 	
 	private String cep;
@@ -48,6 +50,9 @@ public class Pessoa implements Serializable {
 	
 	@OneToMany(mappedBy="pessoa", orphanRemoval= true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
+	
+	@Enumerated( EnumType.STRING )
+	private Cargo cargo;
 	
 	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
@@ -157,7 +162,12 @@ public class Pessoa implements Serializable {
 		this.profissao = profissao;
 	}
 
-	
-	
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
 	
 }
